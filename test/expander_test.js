@@ -1,7 +1,6 @@
 'use strict';
 
 var expander = require('../lib/expander');
-var _ = require('lodash');
 
 exports['expander'] = {
   setUp: function(done) {
