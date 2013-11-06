@@ -39,8 +39,8 @@ expander.get('objRef', config); // {
                                 //   arrayRef: ['test', 'value'],
                                 //   recursiveArrayRef: ['test', ['test', 'value']]
                                 // }
-expander.get('interpolated', config); // 'test value'
-expander.get('interpolatedRecursiveRef', config); // 'test value'
+expander.get('interpolated', config); // test value
+expander.get('interpolatedRecursiveRef', config); // test value
 ```
 
 ## Release History
