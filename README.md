@@ -45,4 +45,5 @@ expander.get(data, 'interpolatedRecursiveRef'); // test value
 
 ## Release History
 
-* 2013-11-05 - v0.1 - initial release
+* 2013-11-08 - v0.2.0 - correctly handle recursively interpolated values
+* 2013-11-05 - v0.1.0 - initial release
