@@ -1,3 +1,4 @@
+/*
 'use strict';
 
 var expander = require('../lib/expander');
@@ -22,13 +23,13 @@ var config = {
 var grunt = {
   config: {
     getRaw: function (path) {
-      return expander.getRaw(path, config);
+      return expander.getRaw(config, path);
     },
     get: function (path) {
-      return expander.get(path, config);
+      return expander.get(config, path);
     },
     process: function (str) {
-      return expander.expand(str, config);
+      return expander.expand(config, str);
     }
   }
 };
@@ -64,3 +65,4 @@ exports['config'] = {
     test.done();
   }
 };
+*/
