@@ -43,9 +43,8 @@ var dataExpanded = {
 
 exports['expander'] = {
   'expander.get': function (test) {
-    test.expect(1);
+    test.expect(8);
     test.deepEqual(expander.get(data), dataExpanded, 'should expand the entire object if no lookup is defined');
-    /*
     test.equal(expander.get(data, 'keyRef'), 'value', 'should expand template strings');
     test.equal(expander.get(data, 'recursiveKeyRef'), 'value', 'should recursively expand template strings');
     test.deepEqual(expander.get(data, 'arrayRef'), ['test', 'value'], 'should expand template strings in arrays');
@@ -63,7 +62,6 @@ exports['expander'] = {
       recursiveArrayRef: ['test', ['test', 'value']]
     }, 'should recursively expand template strings in arrays');
     test.equal(expander.get(data, 'interpolated'), 'test value', 'should expand interpolated template strings');
-    */
     test.done();
   }
 };
