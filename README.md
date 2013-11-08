@@ -23,24 +23,24 @@ var data = {
   interpolated: 'test <%= key %>',
   interpolatedRecursiveRef: 'test <%= keyRef %>'
 };
-expander.get('keyRef', config); // value
-expander.get('recursiveKeyRef', config); // value
-expander.get('arrayRef', config); // ['test', 'value']
-expander.get('recursiveArrayRef', config); // ['test', ['test', 'value']]
-expander.get('obj', config); // {
-                             //   keyRef: 'value',
-                             //   recursiveKeyRef: 'value',
-                             //   arrayRef: ['test', 'value'],
-                             //   recursiveArrayRef: ['test', ['test', 'value']]
-                             // }
-expander.get('objRef', config); // {
-                                //   keyRef: 'value',
-                                //   recursiveKeyRef: 'value',
-                                //   arrayRef: ['test', 'value'],
-                                //   recursiveArrayRef: ['test', ['test', 'value']]
-                                // }
-expander.get('interpolated', config); // test value
-expander.get('interpolatedRecursiveRef', config); // test value
+expander.get(data, 'keyRef'); // value
+expander.get(data, 'recursiveKeyRef'); // value
+expander.get(data, 'arrayRef'); // ['test', 'value']
+expander.get(data, 'recursiveArrayRef'); // ['test', ['test', 'value']]
+expander.get(data, 'obj'); // {
+                           //   keyRef: 'value',
+                           //   recursiveKeyRef: 'value',
+                           //   arrayRef: ['test', 'value'],
+                           //   recursiveArrayRef: ['test', ['test', 'value']]
+                           // }
+expander.get(data, 'objRef'); // {
+                              //   keyRef: 'value',
+                              //   recursiveKeyRef: 'value',
+                              //   arrayRef: ['test', 'value'],
+                              //   recursiveArrayRef: ['test', ['test', 'value']]
+                              // }
+expander.get(data, 'interpolated'); // test value
+expander.get(data, 'interpolatedRecursiveRef'); // test value
 ```
 
 ## Release History
