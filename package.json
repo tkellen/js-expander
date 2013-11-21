@@ -1,7 +1,7 @@
 {
   "name": "expander",
   "description": "Expand template strings in declarative configurations.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/tkellen/expander",
   "author": {
     "name": "Tyler Kellen",
@@ -36,7 +36,7 @@
     "declarative configuration"
   ],
   "dependencies": {
-    "dotty": "0.0.2",
+    "getobject": "0.1.0",
     "lodash": "~2.2.1"
   }
 }

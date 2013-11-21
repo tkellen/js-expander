@@ -10,6 +10,12 @@ module.exports = function(grunt) {
       },
       all: ['Gruntfile.js', 'lib/**/*.js', 'test/*.js']
     },
+    watch: {
+      lib: {
+        files: ['lib/*','test/*'],
+        tasks: ['default']
+      }
+    },
     nodeunit: {
       files: ['test/**/*_test.js'],
     }
@@ -18,6 +24,7 @@ module.exports = function(grunt) {
   // Load plugins.
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task.
   grunt.registerTask('default', ['jshint', 'nodeunit']);
