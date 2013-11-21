@@ -36,7 +36,7 @@
     "declarative configuration"
   ],
   "dependencies": {
-    "dotty": "0.0.2",
+    "getobject": "0.1.0",
     "lodash": "~2.2.1"
   }
 }
