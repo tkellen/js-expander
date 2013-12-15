@@ -25,6 +25,10 @@ var data = {
     return this.get(config, 'keyRef');
   }),
   embeddedMethod: '<%= _.extend({}, obj) %>',
+  myFunc: function(item) {
+    return item.toUpperCase();
+  },
+  myFuncValue: '<%= myFunc(key) %>',
 
   _key: 'value',
   _keyRef: '${_key}',
@@ -41,7 +45,11 @@ var data = {
   _objRef: '${_obj}',
   _interpolated: 'test ${ _key}',
   _interpolatedRecursiveRef: 'test ${_keyRef }',
-  _embeddedMethod: '${ _.extend({}, _obj) }'
+  _embeddedMethod: '${ _.extend({}, _obj) }',
+  _myFunc: function(item) {
+    return item.toUpperCase();
+  },
+  _myFuncValue: '<%= _myFunc(_key) %>',
 };
 
 var dataExpanded = {
@@ -73,6 +81,8 @@ var dataExpanded = {
     arrayRef: [ 'test', 'value' ],
     recursiveArrayRef: [ 'test', [ 'test', 'value' ] ]
   },
+  myFunc: data.myFunc,
+  myFuncValue: 'VALUE',
 
   _key: 'value',
   _keyRef: 'value',
@@ -99,12 +109,14 @@ var dataExpanded = {
     _recursiveKeyRef: 'value',
     _arrayRef: [ 'test', 'value' ],
     _recursiveArrayRef: [ 'test', [ 'test', 'value' ] ]
-  }
+  },
+  _myFunc: data._myFunc,
+  _myFuncValue: 'VALUE',
 };
 
 exports['expander'] = {
   'expander.get': function (test) {
-    test.expect(21);
+    test.expect(23);
     test.deepEqual(expander.get(data), dataExpanded, 'should expand the entire object if no lookup is defined');
 
     // test <%= key %>
@@ -119,6 +131,7 @@ exports['expander'] = {
     test.equal(expander.get(data, 'methodRef'), dataExpanded.key, 'should execute functions, passing in the config');
     test.equal(expander.get(data, 'methodRefContext'), dataExpanded.keyRef, 'should execute expander functions, passing in the config and setting context to expander');
     test.deepEqual(expander.get(data, 'embeddedMethod'), dataExpanded.embeddedMethod, 'should expand functions and add return the object');
+    test.equal(expander.get(data, 'myFuncValue'), dataExpanded.myFuncValue, 'should expand functions on the data object');
 
     // test ${key}
     test.equal(expander.get(data, '_keyRef'), dataExpanded._keyRef, 'should expand template strings');
@@ -130,6 +143,7 @@ exports['expander'] = {
     test.deepEqual(expander.get(data, '_objRef'), dataExpanded._objRef, 'should recursively expand template strings in arrays');
     test.equal(expander.get(data, '_interpolated'), dataExpanded._interpolated, 'should expand interpolated template strings');
     test.deepEqual(expander.get(data, '_embeddedMethod'), dataExpanded._embeddedMethod, 'should expand functions and return the object');
+    test.equal(expander.get(data, '_myFuncValue'), dataExpanded._myFuncValue, 'should expand functions on the data object');
 
     test.done();
  }
