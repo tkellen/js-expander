@@ -18,6 +18,12 @@ var data = {
   objRef: '<%= obj %>',
   interpolated: 'test <%= key %>',
   interpolatedRecursiveRef: 'test <%= keyRef %>',
+  methodRef: expander.fn(function(config) {
+    return config.key;
+  }),
+  methodRefContext: expander.fn(function(config) {
+    return this.get(config, 'keyRef');
+  }),
 
   _key: 'value',
   _keyRef: '${_key}',
@@ -57,6 +63,8 @@ var dataExpanded = {
   },
   interpolated: 'test value',
   interpolatedRecursiveRef: 'test value',
+  methodRef: 'value',
+  methodRefContext: 'value',
 
   _key: 'value',
   _keyRef: 'value',
@@ -82,7 +90,7 @@ var dataExpanded = {
 
 exports['expander'] = {
   'expander.get': function (test) {
-    test.expect(17);
+    test.expect(19);
     test.deepEqual(expander.get(data), dataExpanded, 'should expand the entire object if no lookup is defined');
 
     // test <%= key %>
@@ -94,6 +102,8 @@ exports['expander'] = {
     test.deepEqual(expander.get(data, 'dotRef'), dataExpanded.key, 'should expand template strings with dots');
     test.deepEqual(expander.get(data, 'objRef'), dataExpanded.objRef, 'should recursively expand template strings in arrays');
     test.equal(expander.get(data, 'interpolated'), dataExpanded.interpolated, 'should expand interpolated template strings');
+    test.equal(expander.get(data, 'methodRef'), dataExpanded.key, 'should execute functions, passing in the config');
+    test.equal(expander.get(data, 'methodRefContext'), dataExpanded.keyRef, 'should execute expander functions, passing in the config and setting context to expander');
 
     // test ${key}
     test.equal(expander.get(data, '_keyRef'), dataExpanded._keyRef, 'should expand template strings');

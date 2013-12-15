@@ -5,7 +5,7 @@
 ## Examples
 
 ```js
-var expander = require('expander');
+var expander = require('./lib/expander');
 
 var data = {
   key: 'value',
@@ -23,22 +23,14 @@ var data = {
   objRef: '<%= obj %>',
   interpolated: 'test <%= key %>',
   interpolatedRecursiveRef: 'test <%= keyRef %>',
-
-  _key: 'value',
-  _keyRef: '${_key}',
-  _recursiveKeyRef: '${_keyRef}',
-  _arrayRef: ['test', '${_key}'],
-  _recursiveArrayRef: ['test', '${_arrayRef}'],
-  _obj: {
-    _keyRef: '${_key}',
-    _recursiveKeyRef: '${_keyRef}',
-    _arrayRef: ['test', '${_key}'],
-    _recursiveArrayRef: ['test', '${_arrayRef}']
-  },
-  _dotRef: '${ _obj._keyRef }',
-  _objRef: '${_obj}',
-  _interpolated: 'test ${ _key}',
-  _interpolatedRecursiveRef: 'test ${_keyRef }'
+  methodRef: expander.fn(function (config) {
+    // config is the entire config
+    return config.key;
+  }),
+  methodRefContext: expander.fn(function (config) {
+    // this is a reference to expander
+    return this.get(config, 'keyRef');
+  })
 };
 
 expander.get(data, 'keyRef'); // value
@@ -59,10 +51,13 @@ expander.get(data, 'objRef'); // {
                               // }
 expander.get(data, 'interpolated'); // test value
 expander.get(data, 'interpolatedRecursiveRef'); // test value
+expander.get(data, 'methodRef'); // value
+expander.get(data, 'methodRefContext'); // value
 ```
 
 ## Release History
 
+* 2013-12-15 - v0.2.2 - support auto expansion of functions
 * 2013-11-21 - v0.2.1 - support ${value} strings
 * 2013-11-08 - v0.2.0 - correctly handle recursively interpolated values
 * 2013-11-05 - v0.1.0 - initial release
