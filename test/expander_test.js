@@ -29,6 +29,12 @@ var data = {
     return item.toUpperCase();
   },
   myFuncValue: '<%= myFunc(key) %>',
+  nested: {
+    myFunc: function(item) {
+      return item.toUpperCase();
+    },
+    myFuncValue: '<%= nested.myFunc(key) %>'
+  },
 
   _key: 'value',
   _keyRef: '${_key}',
@@ -49,7 +55,13 @@ var data = {
   _myFunc: function(item) {
     return item.toUpperCase();
   },
-  _myFuncValue: '<%= _myFunc(_key) %>',
+  _myFuncValue: '${ _myFunc(_key) }',
+  _nested: {
+    _myFunc: function(item) {
+      return item.toUpperCase();
+    },
+    _myFuncValue: '${ _nested._myFunc(_key) }'
+  },
 };
 
 var dataExpanded = {
@@ -83,6 +95,10 @@ var dataExpanded = {
   },
   myFunc: data.myFunc,
   myFuncValue: 'VALUE',
+  nested: {
+    myFunc: data.nested.myFunc,
+    myFuncValue: 'VALUE'
+  },
 
   _key: 'value',
   _keyRef: 'value',
@@ -112,11 +128,15 @@ var dataExpanded = {
   },
   _myFunc: data._myFunc,
   _myFuncValue: 'VALUE',
+  _nested: {
+    _myFunc: data._nested._myFunc,
+    _myFuncValue: 'VALUE'
+  }
 };
 
 exports['expander'] = {
   'expander.get': function (test) {
-    test.expect(23);
+    test.expect(25);
     test.deepEqual(expander.get(data), dataExpanded, 'should expand the entire object if no lookup is defined');
 
     // test <%= key %>
@@ -132,6 +152,7 @@ exports['expander'] = {
     test.equal(expander.get(data, 'methodRefContext'), dataExpanded.keyRef, 'should execute expander functions, passing in the config and setting context to expander');
     test.deepEqual(expander.get(data, 'embeddedMethod'), dataExpanded.embeddedMethod, 'should expand functions and add return the object');
     test.equal(expander.get(data, 'myFuncValue'), dataExpanded.myFuncValue, 'should expand functions on the data object');
+    test.equal(expander.get(data, 'nested.myFuncValue'), dataExpanded.nested.myFuncValue, 'should expand functions on the nested data object');
 
     // test ${key}
     test.equal(expander.get(data, '_keyRef'), dataExpanded._keyRef, 'should expand template strings');
@@ -144,6 +165,7 @@ exports['expander'] = {
     test.equal(expander.get(data, '_interpolated'), dataExpanded._interpolated, 'should expand interpolated template strings');
     test.deepEqual(expander.get(data, '_embeddedMethod'), dataExpanded._embeddedMethod, 'should expand functions and return the object');
     test.equal(expander.get(data, '_myFuncValue'), dataExpanded._myFuncValue, 'should expand functions on the data object');
+    test.equal(expander.get(data, '_nested._myFuncValue'), dataExpanded._nested._myFuncValue, 'should expand functions on the nested data object');
 
     test.done();
  }
