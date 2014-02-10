@@ -1,26 +1,16 @@
-/*
- * expander
- * http://github.com/tkellen/expander
- *
- * Copyright (c) 2013 Tyler Kellen
- * Licensed under the MIT license.
- */
-
-'use strict';
-
-var _ = require('lodash');
-var getobject = require('getobject');
+const _ = require('lodash');
+const getobject = require('getobject');
 
 // exported object
 var expander = module.exports = {};
 
 // match these: <%= foo %> and <%= foo.bar %>
 // but not these: <%= foo() %> or <%= foo.bar() %>
-expander.tmplRegExp = /\s*(?:\${\s*([a-z0-9_]+(?:\.[a-z0-9_]+)*)\s*}|<%=\s*([a-z0-9_]+(?:\.[a-z0-9_]+)*)\s*%>)\s*/i;
+var tmplRegExp = /\s*(?:\${\s*([a-z0-9_]+(?:\.[a-z0-9_]+)*)\s*}|<%=\s*([a-z0-9_]+(?:\.[a-z0-9_]+)*)\s*%>)\s*/i;
 
 // inspect string for lookups that satisfy the above regexp
-expander.findProperty = function (lookup) {
-  var matches = expander.tmplRegExp.exec(lookup);
+var findProperty = function (lookup) {
+  var matches = tmplRegExp.exec(lookup);
   if(matches) {
     return {
       src: matches && matches[0],
@@ -31,17 +21,11 @@ expander.findProperty = function (lookup) {
   }
 };
 
-// set a heuristic indicating the method should be expanded
-expander.fn = function(method) {
-  method.__expanderFn__ = true;
-  return method;
-};
-
 // recursively expand a string until it doesn't contain any template strings
-expander.stringExpand = function (data, lookup) {
+var stringExpand = function (data, lookup) {
   var property;
   // as long as this contains a template string, keep traversing
-  while(property = expander.findProperty(lookup)) {
+  while(property = findProperty(lookup)) {
     // if this doesn't solely contain a template lookup (e.g. '<%= key %>'), then
     // recursively process it as a template to handle interpolated strings (e.g. 'hi <%= key %>).
     if(property.src !== lookup) {
@@ -55,14 +39,14 @@ expander.stringExpand = function (data, lookup) {
 };
 
 // recursively expand an array until it doesn't contain any template strings
-expander.arrayExpand = function (data, arr) {
+var arrayExpand = function (data, arr) {
   return arr.map(function(lookup) {
     return expander.process(data, lookup);
   });
 };
 
 // recursively expand an object, resolving its template strings
-expander.objectExpand = function (data, obj) {
+var objectExpand = function (data, obj) {
   var result = {};
   Object.keys(obj).forEach(function(key) {
     result[key] = expander.process(data, obj[key]);
@@ -70,16 +54,22 @@ expander.objectExpand = function (data, obj) {
   return result;
 };
 
+// set a heuristic indicating the method should be expanded
+expander.fn = function (method) {
+  method.__expanderFn__ = true;
+  return method;
+};
+
 // expand any type of legal lookup
 expander.process = function (data, lookup) {
   if(_.isFunction(lookup) && lookup.__expanderFn__ === true) {
     return lookup.call(this, data);
   } else if(_.isString(lookup)) {
-    return expander.stringExpand(data, lookup);
+    return stringExpand(data, lookup);
   } else if(_.isArray(lookup)) {
-    return expander.arrayExpand(data, lookup);
+    return arrayExpand(data, lookup);
   } else if(_.isPlainObject(lookup)) {
-    return expander.objectExpand(data, lookup);
+    return objectExpand(data, lookup);
   } else {
     return lookup;
   }
@@ -95,10 +85,30 @@ expander.getRaw = function (data, lookup) {
 };
 
 // get the expanded value of a key as referenced by a dot-notated string
-expander.get = function(data, lookup) {
+expander.get = function (data, lookup) {
   if (!lookup) {
-    return expander.objectExpand(data, data);
+    return objectExpand(data, data);
   } else {
     return expander.process(data, getobject.get(data, lookup));
   }
+};
+
+// set the value of a key as referenced by a dot-notated string
+expander.set = function (data, lookup, value) {
+  return getobject.set(data, lookup, value);
+};
+
+// provide a getter/setter interface for expander
+expander.interface = function (data) {
+  var API = function (prop, value) {
+    if (arguments.length === 2) {
+      return getobject.set(data, prop, value);
+    } else {
+      return expander.get(data, prop);
+    }
+  };
+  ['get', 'getRaw', 'set', 'process'].forEach(function (method) {
+    API[method] = expander[method].bind(null, data);
+  });
+  return API;
 };

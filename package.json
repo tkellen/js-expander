@@ -1,7 +1,7 @@
 {
   "name": "expander",
   "description": "Expand template strings in declarative configurations.",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "homepage": "https://github.com/tkellen/expander",
   "author": {
     "name": "Tyler Kellen",
@@ -20,17 +20,16 @@
       "url": "https://github.com/tkellen/expander/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "lib/expander",
+  "main": "index.js",
   "engines": {
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "grunt"
+    "test": "mocha -R spec test/index.js"
   },
   "devDependencies": {
-    "grunt-contrib-jshint": "~0.7.1",
-    "grunt-contrib-nodeunit": "~0.2.2",
-    "grunt": "~0.4.1"
+    "mocha": "~1.17.1",
+    "chai": "~1.9.0"
   },
   "keywords": [
     "declarative configuration"

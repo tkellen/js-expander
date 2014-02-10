@@ -5,7 +5,7 @@
 ## Examples
 
 ```js
-var expander = require('./lib/expander');
+var expander = require('expander');
 
 var data = {
   key: 'value',
@@ -53,10 +53,34 @@ expander.get(data, 'interpolated'); // test value
 expander.get(data, 'interpolatedRecursiveRef'); // test value
 expander.get(data, 'methodRef'); // value
 expander.get(data, 'methodRefContext'); // value
+
+// getter setter api
+var config = expander.interface(config);
+config('keyRef'); // value
+config('recursiveKeyRef'); // value
+config('arrayRef'); // ['test', 'value']
+config('recursiveArrayRef'); // ['test', ['test', 'value']]
+config('obj'); // {
+               //   keyRef: 'value',
+               //   recursiveKeyRef: 'value',
+               //   arrayRef: ['test', 'value'],
+               //   recursiveArrayRef: ['test', ['test', 'value']]
+               // }
+config('objRef'); // {
+                  //   keyRef: 'value',
+                  //   recursiveKeyRef: 'value',
+                  //   arrayRef: ['test', 'value'],
+                  //   recursiveArrayRef: ['test', ['test', 'value']]
+                  // }
+config('interpolated'); // test value
+config('interpolatedRecursiveRef'); // test value
+config('methodRef'); // value
+config('methodRefContext'); // value
 ```
 
 ## Release History
 
+* 2014-02-10 - v0.3.0 - support a getter/setter api
 * 2013-12-15 - v0.2.2 - support auto expansion of functions
 * 2013-11-21 - v0.2.1 - support ${value} strings
 * 2013-11-08 - v0.2.0 - correctly handle recursively interpolated values
