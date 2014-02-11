@@ -80,6 +80,7 @@ config('methodRefContext'); // value
 
 ## Release History
 
+* 2014-02-11 - v0.3.1 - interface emits events on set
 * 2014-02-10 - v0.3.0 - support a getter/setter api
 * 2013-12-15 - v0.2.2 - support auto expansion of functions
 * 2013-11-21 - v0.2.1 - support ${value} strings

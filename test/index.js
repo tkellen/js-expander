@@ -152,13 +152,21 @@ describe('expander', function () {
     });
   });
 
-  describe('interface', function() {
+  describe('interface', function () {
     it('should provided a getter/setter interface', function () {
       var config = expander.interface(data);
       expect(config('keyRef')).to.deep.equal(dataExpanded.keyRef);
       expect(config.get('recursiveKeyRef')).to.deep.equal(dataExpanded.recursiveKeyRef);
       config('keyRef', 'dude');
       expect(config('keyRef')).to.equal('dude');
+    });
+
+    it('should emit events when setting values', function (done) {
+      var config = expander.interface(data);
+      config.on('set', function () {
+        done();
+      });
+      config('keyRef', 'dude');
     });
   });
 });

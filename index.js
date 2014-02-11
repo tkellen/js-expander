@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const getobject = require('getobject');
+const EventEmitter = require('events').EventEmitter;
 
 // exported object
 var expander = module.exports = {};
@@ -98,16 +99,34 @@ expander.set = function (data, lookup, value) {
   return getobject.set(data, lookup, value);
 };
 
+expander.walk = function (config, lookup, key) {
+  var path = [];
+  var nodes = lookup.split('.');
+  var merges = [config.get(key)];
+  nodes.forEach(function (node) {
+    path.push(node);
+    merges.push(config.get(path.concat(key).join('.')));
+  });
+  return _.merge.apply(null, merges);
+};
+
 // provide a getter/setter interface for expander
+// this is so ugly.
 expander.interface = function (data) {
+  var emitter = new EventEmitter();
   var API = function (prop, value) {
     if (arguments.length === 2) {
+      emitter.emit('set', prop, value);
       return getobject.set(data, prop, value);
     } else {
       return expander.get(data, prop);
     }
   };
-  ['get', 'getRaw', 'set', 'process'].forEach(function (method) {
+  API.set = function (prop, value) {
+    return API(prop, value);
+  };
+  API.on = emitter.on.bind(emitter);
+  ['get', 'getRaw', 'process'].forEach(function (method) {
     API[method] = expander[method].bind(null, data);
   });
   return API;
