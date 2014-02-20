@@ -90,6 +90,7 @@ var dataExpanded = {
 
 describe('expander', function () {
   describe('get', function () {
+
     // test <%= key %>
     it('should expand the entire object if no lookup is defined', function () {
       expect(expander.get(data)).to.deep.equal(dataExpanded);
@@ -123,6 +124,20 @@ describe('expander', function () {
     });
     it('should execute expander functions, passing in the config and setting context to expander', function () {
       expect(expander.get(data, 'methodRefContext')).equal(dataExpanded.keyRef);
+    });
+
+    it('should allow passing options object to _.template', function () {
+      var dataWithImports = {
+        key: '<%= uppercase("value") %>'
+      };
+      var options = {
+        imports: {
+          uppercase: function (str) {
+            return "VALUE";
+          }
+        }
+      };
+      expect(expander.get(dataWithImports, 'key', options)).to.equal('VALUE');
     });
 
     // test ${key}
@@ -169,4 +184,5 @@ describe('expander', function () {
       config('keyRef', 'dude');
     });
   });
+
 });

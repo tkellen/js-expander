@@ -2,6 +2,69 @@
 
 > Expand template strings in declarative configurations.
 
+## API
+
+### get(data, lookup, imports)
+Retrieve a value from the data object with all template strings resolved.
+
+`data` a configuration object
+`lookup` a dot-notated key
+`options` sent to [_.template](http://lodash.com/docs#template) when resolving values.
+
+Example:
+```js
+var data = {
+  key: '<%= uppercase("foo") %>'
+};
+expander.get(data, 'key', {
+  imports: {
+    uppercase: function (str) {
+      return str.toUpperCase();
+    }
+  }
+}); // FOO
+
+### getRaw(data, lookup)
+Retrieve a literal value from the data object.
+
+`data` a configuration object
+`lookup` a dot-notated string representing a key in the configuration
+
+### set(data, lookup, value)
+Set a value in the data object.
+
+`data` a configuration object
+`lookup` a dot-notated string representing a key in the data
+`value` the value to set
+
+### process(data, lookup, options)
+Resolve any arbitrary template string.
+
+`data` a configuration object
+`lookup` any string value, typically a template string, e.g. "<%= key %>"
+`options` sent to [_.template](http://lodash.com/docs#template) when resolving values.
+
+### interface(data, options)
+Bind the above API to a provided data object so you can access it more succinctly.
+
+`data` a configuration object
+`options` sent to [_.template](http://lodash.com/docs#template) when resolving values.
+
+Example:
+```js
+var configRaw = {
+  key: 'value',
+  keyRef: '<%= key %>'
+};
+var config = expander.interface(config);
+config('key'); // value
+config.get('key'); // value
+config('keyRef'); // value
+config.get('keyRef'); // value
+config('key', 'changed'); // changed
+config('key'); // changed
+```
+
 ## Examples
 
 ```js
@@ -55,7 +118,7 @@ expander.get(data, 'methodRef'); // value
 expander.get(data, 'methodRefContext'); // value
 
 // getter setter api
-var config = expander.interface(config);
+var config = expander.interface(data);
 config('keyRef'); // value
 config('recursiveKeyRef'); // value
 config('arrayRef'); // ['test', 'value']
@@ -80,6 +143,7 @@ config('methodRefContext'); // value
 
 ## Release History
 
+* 2014-02-20 - v0.3.2 - allow passing options to _.template
 * 2014-02-11 - v0.3.1 - interface emits events on set
 * 2014-02-10 - v0.3.0 - support a getter/setter api
 * 2013-12-15 - v0.2.2 - support auto expansion of functions
