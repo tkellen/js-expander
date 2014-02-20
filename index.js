@@ -99,17 +99,6 @@ expander.set = function (data, lookup, value) {
   return getobject.set(data, lookup, value);
 };
 
-expander.walk = function (config, lookup, key) {
-  var path = [];
-  var nodes = lookup.split('.');
-  var merges = [config.get(key)];
-  nodes.forEach(function (node) {
-    path.push(node);
-    merges.push(config.get(path.concat(key).join('.')));
-  });
-  return _.merge.apply(null, merges);
-};
-
 // provide a getter/setter interface for expander
 // this is so ugly.
 expander.interface = function (data) {
