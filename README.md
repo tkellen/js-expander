@@ -7,9 +7,9 @@
 ### get(data, lookup, imports)
 Retrieve a value from the data object with all template strings resolved.
 
-`data` a configuration object
-`lookup` a dot-notated key
-`options` sent to [_.template](http://lodash.com/docs#template) when resolving values.
+`data` a configuration object  
+`lookup` a dot-notated key  
+`options` sent to [_.template](http://lodash.com/docs#template) when resolving values.  
 
 Example:
 ```js
@@ -23,32 +23,33 @@ expander.get(data, 'key', {
     }
   }
 }); // FOO
+```
 
 ### getRaw(data, lookup)
 Retrieve a literal value from the data object.
 
-`data` a configuration object
-`lookup` a dot-notated string representing a key in the configuration
+`data` a configuration object  
+`lookup` a dot-notated string representing a key in the configuration 
 
 ### set(data, lookup, value)
 Set a value in the data object.
 
-`data` a configuration object
-`lookup` a dot-notated string representing a key in the data
-`value` the value to set
+`data` a configuration object  
+`lookup` a dot-notated string representing a key in the data  
+`value` the value to set  
 
 ### process(data, lookup, options)
 Resolve any arbitrary template string.
 
-`data` a configuration object
-`lookup` any string value, typically a template string, e.g. "<%= key %>"
-`options` sent to [_.template](http://lodash.com/docs#template) when resolving values.
+`data` a configuration object  
+`lookup` any string value, typically a template string, e.g. "<%= key %>"  
+`options` sent to [_.template](http://lodash.com/docs#template) when resolving values.  
 
 ### interface(data, options)
 Bind the above API to a provided data object so you can access it more succinctly.
 
-`data` a configuration object
-`options` sent to [_.template](http://lodash.com/docs#template) when resolving values.
+`data` a configuration object  
+`options` sent to [_.template](http://lodash.com/docs#template) when resolving values.  
 
 Example:
 ```js
