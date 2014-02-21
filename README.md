@@ -7,9 +7,9 @@
 ### get(data, lookup, imports)
 Retrieve a value from the data object with all template strings resolved.
 
-`data` a configuration object  
-`lookup` a dot-notated key  
-`options` sent to [_.template](http://lodash.com/docs#template) when resolving values.  
+`data` a configuration object
+`lookup` a dot-notated key
+`options` sent to [_.template](http://lodash.com/docs#template) when resolving values.
 
 Example:
 ```js
@@ -28,28 +28,30 @@ expander.get(data, 'key', {
 ### getRaw(data, lookup)
 Retrieve a literal value from the data object.
 
-`data` a configuration object  
-`lookup` a dot-notated string representing a key in the configuration 
+`data` a configuration object
+`lookup` a dot-notated string representing a key in the configuration
 
 ### set(data, lookup, value)
 Set a value in the data object.
 
-`data` a configuration object  
-`lookup` a dot-notated string representing a key in the data  
-`value` the value to set  
+`data` a configuration object
+`lookup` a dot-notated string representing a key in the data
+`value` the value to set
 
 ### process(data, lookup, options)
 Resolve any arbitrary template string.
 
-`data` a configuration object  
-`lookup` any string value, typically a template string, e.g. "<%= key %>"  
-`options` sent to [_.template](http://lodash.com/docs#template) when resolving values.  
+`data` a configuration object
+`lookup` any string value, typically a template string, e.g. "<%= key %>"
+`options` sent to [_.template](http://lodash.com/docs#template) when resolving values.
 
 ### interface(data, options)
 Bind the above API to a provided data object so you can access it more succinctly.
 
-`data` a configuration object  
-`options` sent to [_.template](http://lodash.com/docs#template) when resolving values.  
+`data` a configuration object
+`options` sent to [_.template](http://lodash.com/docs#template) automatically when resolving values.
+
+**Note:** When using the interface API, passing options to `get` or `process` will perform a shallow merge over `options` provided when the interface was instantiated.
 
 Example:
 ```js
@@ -144,6 +146,7 @@ config('methodRefContext'); // value
 
 ## Release History
 
+* 2014-02-21 - v0.3.3 - allow overriding default options for _.template in interface api
 * 2014-02-20 - v0.3.2 - allow passing options to _.template
 * 2014-02-11 - v0.3.1 - interface emits events on set
 * 2014-02-10 - v0.3.0 - support a getter/setter api

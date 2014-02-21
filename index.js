@@ -111,7 +111,6 @@ expander.set = function (data, lookup, value) {
 };
 
 // provide a getter/setter interface for expander
-// this is so ugly.
 expander.interface = function (data, options) {
   var emitter = new EventEmitter();
   options = options||{};
@@ -123,16 +122,17 @@ expander.interface = function (data, options) {
       return expander.get(data, prop, options);
     }
   };
+  API.on = emitter.on.bind(emitter);
+  API.getRaw = expander.getRaw.bind(null, data);
+  API.get = function (prop, opts) {
+    return expander.get(data, prop, _.extend({}, options, opts));
+  };
+  API.process = function (lookup, opts) {
+    return expander.process(data, lookup, _.extend({}, options, opts));
+  };
   API.set = function (prop, value) {
     return API(prop, value);
   };
-  API.on = emitter.on.bind(emitter);
-  API.get = function (prop) {
-    return expander.get(data, prop, options)
-  };
-  API.getRaw = expander.getRaw.bind(null, data);
-  API.process = function (lookup) {
-    return expander.process(data, lookup, options);
-  };
+
   return API;
 };

@@ -133,11 +133,20 @@ describe('expander', function () {
       var options = {
         imports: {
           uppercase: function (str) {
-            return "VALUE";
+            return str.toUpperCase();
           }
         }
       };
       expect(expander.get(dataWithImports, 'key', options)).to.equal('VALUE');
+
+      var config = expander.interface(dataWithImports, options);
+      expect(config.get('key', {
+        imports: {
+          uppercase: function (str) {
+            return str.toUpperCase()+'-override';
+          }
+        }
+      })).to.equal('VALUE-override')
     });
 
     // test ${key}
