@@ -5,7 +5,7 @@
 
 ## API
 
-### get(data, lookup, imports)
+### get(data, lookup, options)
 Retrieve a value from the data object with all template strings resolved.
 
 `data` a configuration object  
