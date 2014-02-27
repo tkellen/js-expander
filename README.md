@@ -79,15 +79,15 @@ var data = {
   keyRef: '<%= key %>',
   recursiveKeyRef: '<%= keyRef %>',
   arrayRef: ['test', '<%= key %>'],
-  recursiveArrayRef: ['test', '<%= arrayRef %>'],
+  recursiveArrayRef: ['test', '${ arrayRef }'],
   obj: {
     keyRef: '<%= key %>',
     recursiveKeyRef: '<%= keyRef %>',
     arrayRef: ['test', '<%= key %>'],
-    recursiveArrayRef: ['test', '<%= arrayRef %>']
+    recursiveArrayRef: ['test', '${ arrayRef }']
   },
   dotRef: '<%= obj.keyRef %>',
-  objRef: '<%= obj %>',
+  objRef: '${ obj }',
   interpolated: 'test <%= key %>',
   interpolatedRecursiveRef: 'test <%= keyRef %>',
   methodRef: expander.fn(function (config) {
@@ -120,29 +120,6 @@ expander.get(data, 'interpolated'); // test value
 expander.get(data, 'interpolatedRecursiveRef'); // test value
 expander.get(data, 'methodRef'); // value
 expander.get(data, 'methodRefContext'); // value
-
-// getter setter api
-var config = expander.interface(data);
-config('keyRef'); // value
-config('recursiveKeyRef'); // value
-config('arrayRef'); // ['test', 'value']
-config('recursiveArrayRef'); // ['test', ['test', 'value']]
-config('obj'); // {
-               //   keyRef: 'value',
-               //   recursiveKeyRef: 'value',
-               //   arrayRef: ['test', 'value'],
-               //   recursiveArrayRef: ['test', ['test', 'value']]
-               // }
-config('objRef'); // {
-                  //   keyRef: 'value',
-                  //   recursiveKeyRef: 'value',
-                  //   arrayRef: ['test', 'value'],
-                  //   recursiveArrayRef: ['test', ['test', 'value']]
-                  // }
-config('interpolated'); // test value
-config('interpolatedRecursiveRef'); // test value
-config('methodRef'); // value
-config('methodRefContext'); // value
 ```
 
 ## Release History
