@@ -60,7 +60,7 @@ var configRaw = {
   key: 'value',
   keyRef: '<%= key %>'
 };
-var config = expander.interface(config);
+var config = expander.interface(configRaw);
 config('key'); // value
 config.get('key'); // value
 config('keyRef'); // value
