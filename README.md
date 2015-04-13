@@ -1,4 +1,4 @@
-# expander [![Build Status](https://secure.travis-ci.org/tkellen/node-expander.png?branch=master)](http://travis-ci.org/tkellen/node-expander)
+# expander [![Build Status](https://secure.travis-ci.org/tkellen/js-expander.png?branch=master)](http://travis-ci.org/tkellen/node-expander)
 > Expand template strings in declarative configurations.
 
 [![NPM](https://nodei.co/npm/expander.png)](https://nodei.co/npm/expander/)
